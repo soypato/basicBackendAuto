@@ -11,7 +11,7 @@ import java.util.List;
 public interface IAutoService {
     public void createAuto(Auto autoNuevo); // create - post
     public Auto getAuto(Long id); // read - get
-    public void updateAuto(Long id, String modelo, int anio); // update
+    public void updateAuto(Auto auto); // update
     public void deleteAuto(Long id); // delete
 
     public List<Auto> getAutos(); // read - get

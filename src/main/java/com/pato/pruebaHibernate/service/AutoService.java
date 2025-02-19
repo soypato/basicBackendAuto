@@ -24,14 +24,10 @@ public class AutoService implements IAutoService {
     }
 
     @Override
-    public void updateAuto(Long id, String modelo, int anio) {
-        Auto modificado = getAuto(id); // busco en la DB
-        if(modificado != null) // si existe
-        { // modifico con setters y getters en local
-            modificado.setModelo(modelo);
-            modificado.setAnio(anio);
-            // Guardo los cambios en la DB
-            autoRepository.save(modificado);
+    public void updateAuto(Auto auto) {
+        if(getAuto(auto.getId()) != null)
+        {
+            autoRepository.save(auto);
         }
     }
 
