@@ -1,31 +1,27 @@
 package com.pato.pruebaHibernate.model;
 
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.lang.ref.Reference;
+import java.util.List;
 
 @Getter @Setter
-@Entity // nueva anotación!
+@Entity
 public class Auto {
     @Id
-    @GeneratedValue(strategy= GenerationType.SEQUENCE) // nueva anotación!
-    // sequence es la más usada en lo laboral
+    @GeneratedValue(strategy= GenerationType.SEQUENCE)
     private long id;
+
     private String modelo;
     private int anio;
-    @OneToOne // "un auto tendrá sólo un motor, y un motor tendrá sólo un auto"
-    @JoinColumn(name = "motor_id_motor", referencedColumnName = "id_motor")
-    // nombre de la FK en la tabla Auto, nombre de la PK en la tabla Motor
+
+    @OneToOne
+    @JoinColumn(name = "id_motor", referencedColumnName = "id_motor") // Aquí referenciamos correctamente
     private Motor motor;
 
-    public Auto(long id, String modelo, int anio) {
-        this.id = id;
-        this.modelo = modelo;
-        this.anio = anio;
-    }
+    @OneToMany(mappedBy = "autoPerteneciente")
+    private List<Rueda> ruedas;
 
     @Override
     public String toString() {
@@ -33,12 +29,10 @@ public class Auto {
                 "id=" + id +
                 ", modelo='" + modelo + '\'' +
                 ", anio=" + anio +
-                ", motor=" + motor +
+                ", motor_id=" + (motor != null ? motor.getId_motor() : "null") +
                 '}';
     }
 
-    // IMPORTANTE EL CONSTRUCTOR VACIO, QUE ES REQUERIDO
     public Auto() {
-
     }
 }
