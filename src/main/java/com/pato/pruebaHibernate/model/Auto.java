@@ -1,5 +1,6 @@
 package com.pato.pruebaHibernate.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,10 +18,14 @@ public class Auto {
     private int anio;
 
     @OneToOne
-    @JoinColumn(name = "id_motor", referencedColumnName = "id_motor") // Aquí referenciamos correctamente
+    @JoinColumn(name = "motor_id_motor", referencedColumnName = "id_motor", unique = true)
+    // "un auto tendrá sólo un motor, y un motor tendrá sólo un auto"
     private Motor motor;
 
-    @OneToMany(mappedBy = "autoPerteneciente")
+    @OneToMany(mappedBy = "autoPerteneciente", cascade = CascadeType.ALL,
+                                                orphanRemoval = true, fetch = FetchType.LAZY)
+    // en las ruedas está el atributo autoPerteneciente, que en la DB es la FK
+    @JsonManagedReference
     private List<Rueda> ruedas;
 
     @Override
