@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter @Setter
 @Entity
@@ -27,6 +28,20 @@ public class Auto {
     // en las ruedas está el atributo autoPerteneciente, que en la DB es la FK
     @JsonManagedReference
     private List<Rueda> ruedas;
+
+    @ManyToMany
+    @JoinTable(
+            name = "auto_pais",
+            // Nombre de la tabla intermedia
+            joinColumns = @JoinColumn(name = "auto_id", nullable = false),
+            // así se llamará la FK de Auto en la tabla intermedia
+            inverseJoinColumns = @JoinColumn(name = "pais_id", nullable = false)
+            // así se llamará la FK de País en la tabla intermedia
+            // nullable = false es que no puede ser nulo en la base de datos el valor
+    )
+    private Set<Pais> paisesHabilitados;
+
+
 
     @Override
     public String toString() {
